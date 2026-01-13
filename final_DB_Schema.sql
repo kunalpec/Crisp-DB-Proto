@@ -143,4 +143,5 @@ CREATE INDEX idx_kb_embedding
 ON knowledge_base
 USING ivfflat (embedding vector_cosine_ops);
 
+
 DROP Table company_api_keys CASCADE;
