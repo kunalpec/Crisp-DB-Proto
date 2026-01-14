@@ -69,6 +69,7 @@ CREATE TABLE company_api_keys (
 CREATE TABLE company_users (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     company_id UUID REFERENCES companies(id) ON DELETE CASCADE NOT NULL,
+    username TEXT NOT NULL,
     email TEXT NOT NULL,
     password_hash TEXT NOT NULL,
     role TEXT CHECK (role IN ('admin','agent')) NOT NULL,

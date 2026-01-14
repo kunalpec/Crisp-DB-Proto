@@ -1,4 +1,5 @@
 from Database_function.connect_db import get_conn
+import secrets
 
 def get_all_plans():
     """
@@ -126,14 +127,63 @@ def delete_plan(plan_id):
         cur.close()
         conn.close()
 
+
+
 if __name__ == "__main__":
-    create_plan("paid", "description", 100000, 100,
-                max_agents=5, human_handover=True, knowledge_base=True)
-    # print(get_all_plans())
+    # create_plan("paid", "description", 100000, 100,
+    #             max_agents=5, human_handover=True, knowledge_base=True)
+    print(get_all_plans())
     # print(get_plan_details('e8abb25e-098a-46b1-97ed-ecd46e687c47'))
     # update_plan('e8abb25e-098a-46b1-97ed-ecd46e687c47', name="paid", price_monthly=1000)
     # print(get_plan_details('29d05dd2-a58d-4f5d-9cdd-8fc676978c68'))
-    # print(delete_plan('e8abb25e-098a-46b1-97ed-ecd46e687c47'))
-    print(get_all_plans())
+    # print(delete_plan("15f389ae-373d-4799-b246-a89e6c8cbae5"))
+    
+
+
+    # print(delete_plan('15f389ae-373d-4799-b246-a89e6c8cbae5'))
+    # print(get_all_plans())
+
+    # create_plan(
+    # name="Free",
+    # description="Basic chatbot for small websites and testing",
+    # monthly_token_limit=100_000,
+    # price_monthly=0.00,
+    # max_agents=1,
+    # human_handover=False,
+    # knowledge_base=True
+    # )
+
+    # create_plan(
+    # name="Starter",
+    # description="For small businesses with basic customer support",
+    # monthly_token_limit=500_000,
+    # price_monthly=29.00,
+    # max_agents=3,
+    # human_handover=True,
+    # knowledge_base=True
+    # )
+
+    # create_plan(
+    # name="Pro",
+    # description="Advanced chatbot with human takeover and higher limits",
+    # monthly_token_limit=2_000_000,
+    # price_monthly=99.00,
+    # max_agents=10,
+    # human_handover=True,
+    # knowledge_base=True
+    # )
+
+    # create_plan(
+    # name="Enterprise",
+    # description="Custom solution for enterprises with high traffic",
+    # monthly_token_limit=10_000_000,
+    # price_monthly=499.00,
+    # max_agents=50,
+    # human_handover=True,
+    # knowledge_base=True
+    # )
+    print()
+
+
 
     # Database_function.Super_admin.plan

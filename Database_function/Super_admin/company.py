@@ -1,8 +1,10 @@
 # some other file at project root
 from Database_function.connect_db import get_conn
-
+import secrets
+from uuid import UUID
+import bcrypt
 # Create the Company
-def create_company(name, domain, plan_id):
+def create_company(name, domain, plan_id,username,email,password):
     conn = get_conn()
     cur=conn.cursor()
     try:
@@ -15,6 +17,10 @@ def create_company(name, domain, plan_id):
             (name, domain, plan_id)
         )
         result = cur.fetchone()
+        conn.commit()
+        create_company_user(result[0],username,email,password,"admin")
+        conn.commit()
+        create_company_api_key(result[0])
         conn.commit()
         return result
 
@@ -152,10 +158,81 @@ def delete_company(company_id):
         cur.close()
         conn.close()
 
+# make api_key
+def create_company_api_key(company_id):
+    api_key = "skv-to-"+secrets.token_hex(32)
 
+    conn = get_conn()
+    cur = conn.cursor()
+    try:
+        cur.execute(
+            """
+            INSERT INTO company_api_keys (company_id, api_key)
+            VALUES (%s, %s)
+            RETURNING api_key;
+            """,
+            (company_id, api_key)
+        )
+
+        result = cur.fetchone()
+        conn.commit()
+        return result[0]
+
+    except Exception as e:
+        conn.rollback()
+        raise e
+
+    finally:
+        cur.close()
+        conn.close()
+
+# create company user
+def create_company_user(company_id: UUID,username:str, email: str, password: str, role: str):
+    # hash password
+    hashed_password = bcrypt.hashpw(
+        password.encode("utf-8"),
+        bcrypt.gensalt()
+    ).decode("utf-8")
+
+    conn = get_conn()
+    cur = conn.cursor()
+    try:
+        cur.execute(
+            """
+            INSERT INTO company_users (
+                company_id,
+                email,
+                password_hash,
+                role,
+                username
+            )
+            VALUES (%s, %s, %s, %s,%s)
+            RETURNING id, email, role,username;
+            """,
+            (company_id, email, hashed_password, role, username)
+        )
+
+        result = cur.fetchone()
+        conn.commit()
+        return result
+
+    except Exception as e:
+        conn.rollback()
+        raise e
+
+    finally:
+        cur.close()
+        conn.close()
+    
 if __name__=="__main__":
-    # print(create_company("Google","google.com","15f389ae-373d-4799-b246-a89e6c8cbae5"))
+    # create_company('abc','IT','f272b9a1-8064-42a3-a0c9-d49e27452368','ABC','testemail@gmail.com','testpassword')
     # print(update_company_info("fe39e6b7-0e76-4dc7-ac26-2fd3e6944e22",status='inactive'))
     # print(delete_company("fe39e6b7-0e76-4dc7-ac26-2fd3e6944e22"))
+    # print()
+    # print(view_all_company())
+    # delete_company('35fa6e25-3caa-4f98-acf1-5035e8d61321')
     # Database_function.Super_admin.company
-    print()
+
+    create_company('Microsoft','IT','f272b9a1-8064-42a3-a0c9-d49e27452368','Ashutosh','microsoft123@gmail.com','Ashu123')
+
+    
