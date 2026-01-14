@@ -12,7 +12,7 @@ def get_conn():
     """
     conn = psycopg.connect(
         host=os.getenv("POSTSQL_HOST"),        
-        dbname="chatbot_saas",
+        dbname="Chatbot_saas",
         user=os.getenv("POSTSQL_USER"),        
         password=os.getenv("POSTSQL_PASSWORD"),
         port=os.getenv("POSTSQL_PORT") 

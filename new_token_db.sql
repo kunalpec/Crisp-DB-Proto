@@ -13,21 +13,42 @@ CREATE TABLE super_admins (
     password_hash TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT now()
 );
+
 -- ==============================
--- COMPANIES
+-- PLANS TABLE
+-- ==============================
+CREATE TABLE plans (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name TEXT NOT NULL UNIQUE,              -- Free, Starter, Pro, Enterprise
+    description TEXT,
+
+    monthly_token_limit BIGINT NOT NULL,    -- e.g. 100k, 1M, 10M
+    price_monthly NUMERIC(10,2) NOT NULL,   -- billing amount
+
+    max_agents INT DEFAULT 1,
+    human_handover BOOLEAN DEFAULT FALSE,
+    knowledge_base BOOLEAN DEFAULT TRUE,
+
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT now()
+);
+
+-- ==============================
+-- COMPANIES (TENANTS)
 -- ==============================
 CREATE TABLE companies (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TEXT NOT NULL,
     domain TEXT,
-    status TEXT CHECK (status IN ('active','inactive')) DEFAULT 'active',
+    status TEXT CHECK (status IN ('active','inactive')) DEFAULT 'inactive',
 
     -- Billing
     total_tokens_used BIGINT DEFAULT 0,
-    token_plan_limit BIGINT DEFAULT 0,
-
+    plan_id UUID REFERENCES plans(id) ON DELETE RESTRICT NOT NULL,
+	
     created_at TIMESTAMP DEFAULT now()
 );
+
 
 -- ==============================
 -- COMPANY API KEYS (CHAT WIDGET)
@@ -142,5 +163,24 @@ CREATE INDEX idx_kb_embedding
 ON knowledge_base
 USING ivfflat (embedding vector_cosine_ops);
 
-
 DROP Table company_api_keys CASCADE;
+
+
+-- ==============================
+-- DROP TABLES (DEPENDENCY SAFE)
+-- ==============================
+
+DROP TABLE IF EXISTS
+    token_usage_logs,
+    human_handover_logs,
+    knowledge_base,
+    messages,
+    conversations,
+    end_users,
+    company_users,
+    company_api_keys,
+    companies,
+    plans,
+    super_admins
+CASCADE;
+
