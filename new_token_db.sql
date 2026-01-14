@@ -42,7 +42,7 @@ CREATE TABLE companies (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TEXT NOT NULL,
     domain TEXT,
-    status TEXT CHECK (status IN ('active','inactive')) DEFAULT 'inactive',
+    status TEXT CHECK (status IN ('active','inactive')) DEFAULT 'active',
 
     -- Billing
     total_tokens_used BIGINT DEFAULT 0,
