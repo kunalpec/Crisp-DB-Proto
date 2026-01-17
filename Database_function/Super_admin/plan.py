@@ -127,13 +127,13 @@ def delete_plan(plan_id):
         conn.close()
 
 if __name__ == "__main__":
-    create_plan("paid", "description", 100000, 100,
-                max_agents=5, human_handover=True, knowledge_base=True)
+    # create_plan("paid", "description", 100000, 100,
+    #             max_agents=5, human_handover=True, knowledge_base=True)
     # print(get_all_plans())
     # print(get_plan_details('e8abb25e-098a-46b1-97ed-ecd46e687c47'))
     # update_plan('e8abb25e-098a-46b1-97ed-ecd46e687c47', name="paid", price_monthly=1000)
     # print(get_plan_details('29d05dd2-a58d-4f5d-9cdd-8fc676978c68'))
-    # print(delete_plan('e8abb25e-098a-46b1-97ed-ecd46e687c47'))
+    # print(delete_plan('95615068-9349-4bb0-b922-b3475c27dbfe'))
     print(get_all_plans())
 
     # Database_function.Super_admin.plan

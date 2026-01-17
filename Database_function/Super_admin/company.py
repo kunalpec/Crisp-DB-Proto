@@ -153,6 +153,15 @@ def delete_company(company_id):
         conn.close()
 
 
+
+
+
+
+
+
+
+
+
 if __name__=="__main__":
     # print(create_company("Google","google.com","15f389ae-373d-4799-b246-a89e6c8cbae5"))
     # print(update_company_info("fe39e6b7-0e76-4dc7-ac26-2fd3e6944e22",status='inactive'))
