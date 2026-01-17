@@ -35,18 +35,25 @@ def create_company(name, domain, plan_id, username, email, password):
         # 1️⃣ Create company
         cur.execute(
             """
-            INSERT INTO companies (name, domain)
-            VALUES (%s, %s)
+            INSERT INTO companies (name, domain, plan_id)
+            VALUES (%s, %s, %s)
             RETURNING id, status;
             """,
-            (name, domain)
+            (name, domain, plan_id)
         )
+        # cur.execute(
+        #     """
+        #     INSERT INTO companies (name, domain)
+        #     VALUES (%s, %s)
+        #     RETURNING id, status;
+        #     """,
+        #     (name, domain)
+        # )
         company_id, status = cur.fetchone()
-
         # 2️⃣ Fetch plan details (ONLY active plans)
         cur.execute(
             """
-            SELECT token_limit, duration_value, duration_unit
+            SELECT monthly_token_limit, duration_value, duration_unit
             FROM plans
             WHERE id = %s AND is_active = true;
             """,
@@ -394,5 +401,37 @@ if __name__=="__main__":
     # print(create_company("Google","google.com","15f389ae-373d-4799-b246-a89e6c8cbae5"))
     # print(update_company_info("fe39e6b7-0e76-4dc7-ac26-2fd3e6944e22",status='inactive'))
     # print(delete_company("fe39e6b7-0e76-4dc7-ac26-2fd3e6944e22"))
+    create_company(
+        name="CampusBot",
+        domain="campusbot.in",
+        plan_id="39685b88-4aae-437f-9b15-1f85450d1e88",
+        username="admin",
+        email="admin@campusbot.in",
+        password="campus123"
+    )
+    create_company(
+        name="ShopAssist AI",
+        domain="shopassist.ai",
+        plan_id="81a66470-02be-472a-8b50-286606b0f65e",
+        username="founder",
+        email="founder@shopassist.ai",
+        password="shop123"
+    )
+    create_company(
+        name="HealthCare Support AI",
+        domain="healthsupport.com",
+        plan_id="601d80d5-5090-45df-b26a-e13dcd3942f4",
+        username="superadmin",
+        email="admin@healthsupport.com",
+        password="health123"
+    )
+    create_company(
+        name="Gov eSeva AI",
+        domain="eseva.gov.in",
+        plan_id="ededb913-59af-4c7d-88f2-c01a160c286e",
+        username="root",
+        email="root@eseva.gov.in",
+        password="govsecure"
+    )
+    print('created companies')
     # Database_function.Super_admin.company
-    print()

@@ -135,6 +135,43 @@ if __name__ == "__main__":
     # update_plan('e8abb25e-098a-46b1-97ed-ecd46e687c47', name="paid", price_monthly=1000)
     # print(get_plan_details('29d05dd2-a58d-4f5d-9cdd-8fc676978c68'))
     # print(delete_plan('95615068-9349-4bb0-b922-b3475c27dbfe'))
+    create_plan(
+    name="Free",
+    description="Basic access for testing with limited usage and single agent.",
+    monthly_token_limit=50_000,
+    price_monthly=0,
+    max_agents=1,
+    human_handover=False,
+    knowledge_base=False
+    )
+    create_plan(
+    name="Starter",
+    description="For small teams building simple AI chatbots with knowledge base support.",
+    monthly_token_limit=500_000,
+    price_monthly=499,
+    max_agents=2,
+    human_handover=False,
+    knowledge_base=True
+    )
+    create_plan(
+    name="Pro",
+    description="Advanced AI agents with higher limits, multi-agent support and human handover.",
+    monthly_token_limit=2_000_000,
+    price_monthly=1999,
+    max_agents=5,
+    human_handover=True,
+    knowledge_base=True
+    )
+    create_plan(
+    name="Enterprise",
+    description="Enterprise-grade deployment with very high limits and full feature access.",
+    monthly_token_limit=10_000_000,
+    price_monthly=9999,
+    max_agents=20,
+    human_handover=True,
+    knowledge_base=True
+    )
+
     print(get_all_plans())
 
     # Database_function.Super_admin.plan
